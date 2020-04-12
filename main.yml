@@ -1,0 +1,41 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: yes
+  vars:
+    # consul_iptables_enable: true
+    consul_connect_enabled: true
+    consul_datacenter: lixin
+    consul_version: 1.7.1
+    consul_dnsmasq_servers:
+      - 223.5.5.5
+      - 192.168.8.1
+    consul_recursors:
+      - 223.5.5.5
+      - 192.168.8.1
+    consul_raw_key: 3JLS4R2sh9eiYEoEi6nLXQ==
+    consul_enable_script_checks: true
+    # consul_addresses:
+    #   http: '0.0.0.0'
+  handlers:
+    - include: handlers/consul.yml
+  roles:
+    - { role: brianshumate.consul }
+    # - { role: yatesr.timezone}
+    # - { role: cloudalchemy.node-exporter}
+  pre_tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        # upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400     
+    - name: install python
+      package: name={{item}} state=present use=apt
+      with_items:
+        - python2.7
+        - python-pip
+  tasks:
+    - name: start consul on linux
+      service:
+        name: consul
+        state: started
