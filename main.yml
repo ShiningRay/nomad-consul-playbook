@@ -5,7 +5,7 @@
   vars:
     # consul_iptables_enable: true
     consul_connect_enabled: true
-    consul_datacenter: lixin
+    consul_datacenter: dc1
     consul_version: 1.7.1
     consul_dnsmasq_servers:
       - 223.5.5.5
